@@ -38,7 +38,7 @@ export class Supports extends CanvasDrawerDecorator implements ICanvasDrawer {
         const supportOnLeftSide = leftSupport !== null
         const supportOnRightSide = rightSupport !== null
         const alignCenterPoint = this.kernelsCanvas.getAlignCenterPoint(zero, end)
-        const width = this.kernels[].L * coefficient.width
+        // const width = this.kernels[].L * coefficient.width
         if (supportOnLeftSide) {
             console.log('Drawing left support')
             this.drawSupport(ctx, leftSupport, coefficient, alignCenterPoint, zero.x)
