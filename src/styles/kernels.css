@@ -1,0 +1,17 @@
+.coefficient-input {
+    width: 0.75rem;
+}
+
+.coefficient-input:focus {
+    border: 0;
+    outline: none;
+}
+
+.load-input{
+    width: 2rem;
+}
+
+.load-input:focus{
+    border: 0;
+    outline: none;
+}

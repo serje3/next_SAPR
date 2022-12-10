@@ -7,8 +7,6 @@ import {Point} from "../components/common/types";
 import {Edges} from "../components/common/edges/Edges";
 import {Lines} from "../components/common/lines/Lines";
 import Link from "next/link";
-import DropdownMenu from "../components/common/DropdownMenu";
-
 
 
 export default function Home() {
@@ -19,9 +17,8 @@ export default function Home() {
             <Link href={"/preprocessor"} className={styles.card}>
                 <h3 className={""}>Препроцессор</h3>
             </Link>
-            <Link href={"/"} className={styles.card}>
+            <Link href={"/processor"} className={styles.card}>
                 <h3>Процессор</h3>
-                <p>не готов</p>
             </Link>
             <Link href={"/"} className={styles.card}>
                 <h3>Постпроцессор</h3>

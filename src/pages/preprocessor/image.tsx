@@ -9,13 +9,19 @@ import Link from "next/link";
 import {Kernels} from "../../components/common/kernels/Kernels";
 import {useAppSelector, usePreprocessorState} from "../../hooks";
 import {Supports} from "../../components/common/supports/Supports";
+import {Loads} from "../../components/common/loads/Loads";
 
 export default function ImageConstruction() {
-    // const canvasDrawer = new Lines(new Edges(dotsArray), lines)
     const preprocessor = usePreprocessorState()
     const kernels = preprocessor.lines
     const supports = preprocessor.supports
-    const canvasDrawer = new Supports(new Kernels(kernels), supports, kernels)
+    const loads = preprocessor.loads
+
+    const canvasDrawer =
+        new Loads(
+            new Supports(new Kernels(kernels),
+                supports),
+            loads)
 
 
     return (

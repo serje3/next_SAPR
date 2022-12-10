@@ -2,6 +2,7 @@ import {AppProps} from "next/app";
 import {Provider} from "react-redux";
 import store from "../store";
 import '../styles/globals.css'
+import '../styles/kernels.css'
 
 
 

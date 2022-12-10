@@ -2,14 +2,17 @@ import {CanvasDrawerDecorator} from "../other/abstract/CanvasDrawerDecorator";
 import {ICanvasDrawer} from "../other/interfaces/ICanvasDrawer";
 import {KernelState, Point, Size, SupportState} from "../types";
 import {Kernels} from "../kernels/Kernels";
+import {IKernelContext} from "../other/interfaces/IKernelContext";
+import {KernelCanvasDrawerDecorator} from "../other/base/KernelCanvasDrawerDecorator";
 
-export class Supports extends CanvasDrawerDecorator implements ICanvasDrawer {
+export class Supports extends KernelCanvasDrawerDecorator implements ICanvasDrawer {
     private kernelsCanvas: Kernels;
+    private readonly kernels: KernelState[];
 
-    constructor(protected readonly behaviour: ICanvasDrawer,
-                private readonly supports: SupportState[],
-                private readonly kernels: KernelState[]) {
-        super();
+    constructor(behaviour: ICanvasDrawer & IKernelContext,
+                private readonly supports: SupportState[]) {
+        super(behaviour);
+        this.kernels = this.behaviour.getKernels()
         this.kernelsCanvas = new Kernels(this.kernels)
     }
 
@@ -20,14 +23,12 @@ export class Supports extends CanvasDrawerDecorator implements ICanvasDrawer {
         const height = currentKernel.A * coefficient.height
         ctx.beginPath()
         const start = alignCenterPoint.y - Math.round(height / 2)
-        console.log(height + alignCenterPoint.y, coefficient, currentKernel.A)
         for (let i = start; i < alignCenterPoint.y + Math.round(height/2); i += step) {
             ctx.moveTo(x, i)
-            ctx.lineTo(x - length, support.leftSide? i + length: i - length)
+            ctx.lineTo(support.leftSide?x - length:x + length, support.leftSide?i + length: i- length)
         }
         ctx.stroke()
         ctx.closePath()
-
     }
 
     updateCallback(ctx: CanvasRenderingContext2D, zero: Point, size: Size, end: Point): void {
@@ -38,15 +39,19 @@ export class Supports extends CanvasDrawerDecorator implements ICanvasDrawer {
         const supportOnLeftSide = leftSupport !== null
         const supportOnRightSide = rightSupport !== null
         const alignCenterPoint = this.kernelsCanvas.getAlignCenterPoint(zero, end)
-        // const width = this.kernels[].L * coefficient.width
+        const posEnd = this.kernelsCanvas.findSumL(coefficient.width)
         if (supportOnLeftSide) {
             console.log('Drawing left support')
             this.drawSupport(ctx, leftSupport, coefficient, alignCenterPoint, zero.x)
         }
         if (supportOnRightSide){
             console.log('Drawing right support')
-            this.drawSupport(ctx,leftSupport, coefficient, alignCenterPoint, end.x)
+            this.drawSupport(ctx,rightSupport, coefficient, alignCenterPoint, zero.x + posEnd)
         }
+    }
+
+    getKernels(): KernelState[] {
+        return this.kernels;
     }
 
 }

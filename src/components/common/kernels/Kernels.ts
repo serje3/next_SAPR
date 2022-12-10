@@ -1,17 +1,18 @@
 import {ICanvasDrawer} from "../other/interfaces/ICanvasDrawer";
 import {KernelState, Point, Size} from "../types";
 import {getNewPos} from "../utils/getNewPos";
+import {IKernelContext} from "../other/interfaces/IKernelContext";
 
-export class Kernels implements ICanvasDrawer {
+export class Kernels implements ICanvasDrawer, IKernelContext {
     private initialCoefficient = {
-        width: 100,
-        height: 30
+        width: 200,
+        height: 10
     }
 
-    constructor(private readonly kernels: KernelState[]) {
+    constructor(private readonly kernels: KernelState[], private readonly labels = true) {
     }
 
-    private findSumL(width) {
+    findSumL(width) {
         return this.kernels.map(kernel => kernel.L * width).reduce((prev, current) => prev + current, 0)
     }
 
@@ -35,16 +36,16 @@ export class Kernels implements ICanvasDrawer {
 
         coefficient = {
             width: coefficient.width,
-            height: Math.abs(Math.round(distY / (maxA - (maxA / 8))))
+            height: Math.abs(Math.round(distY / (maxA + (maxA))))
         }
 
         return coefficient
     }
 
-    updateCallback(ctx: CanvasRenderingContext2D, zero: Point, size?: Size, end?: Point): void {
+
+    private drawKernels(ctx, zero,end){
         const coefficient = this.findOptimalCoefficient(zero, end)
         const alignCenterPoint: Point = this.getAlignCenterPoint(zero,end)
-
         ctx.beginPath()
         let endOfKernel: Point = alignCenterPoint
         for (const kernel of this.kernels) {
@@ -61,6 +62,52 @@ export class Kernels implements ICanvasDrawer {
         ctx.closePath()
     }
 
+    private drawKernelLabels(ctx, zero, end) {
+        const lengthDiagonal = (zero.y + end.y) / 3
+        const length = (zero.x + end.x) / 16
+        const dotRadius = 4
+        const coefficient = this.findOptimalCoefficient(zero, end)
+        // середина по y, начало координат по x
+        let startKernel: Point = this.getAlignCenterPoint(zero,end)
+        startKernel.y -= 10
+        ctx.beginPath()
+        ctx.strokeStyle ="lightgrey"
+        ctx.fillStyle="lightgrey"
+        for (const kernel of this.kernels) {
+            const width = kernel.L * coefficient.width
+            const height = kernel.A * coefficient.height
+            const posX = startKernel.x + Math.round(width/2)
+            const posY = startKernel.y
+            ctx.moveTo(posX,posY)
+            ctx.moveTo(posX, posY)
+            ctx.lineTo(posX + Math.round(lengthDiagonal / 1.5), posY - lengthDiagonal)
+            ctx.moveTo(posX+Math.round(lengthDiagonal / 1.5), posY - lengthDiagonal)
+            ctx.lineTo(posX + Math.round(lengthDiagonal / 1.5) + length, posY - lengthDiagonal)
+            ctx.stroke()
+            startKernel.x += width
+        }
+        ctx.closePath()
+
+        startKernel = this.getAlignCenterPoint(zero,end)
+        ctx.beginPath()
+        for (const kernel of this.kernels){
+            const width = kernel.L * coefficient.width
+            const posX = startKernel.x + Math.round(width/2)
+            const posY = startKernel.y
+            ctx.strokeStyle="black"
+            ctx.strokeText(`${kernel.E === 1? "": kernel.E}E ${kernel.A === 1? "": kernel.A}A ${kernel.L === 1?"":kernel.L}L`,
+                posX + Math.round(lengthDiagonal / 1.5) + (length / 2) - 16, posY - lengthDiagonal - 13)
+            startKernel.x += width
+        }
+        ctx.closePath()
+    }
+
+    updateCallback(ctx: CanvasRenderingContext2D, zero: Point, size?: Size, end?: Point): void {
+        this.drawKernels(ctx, zero, end)
+        if (this.labels)
+            this.drawKernelLabels(ctx, zero, end)
+    }
+
 
     getAlignCenterPoint(zero: Point, end: Point) {
         return {
@@ -68,4 +115,11 @@ export class Kernels implements ICanvasDrawer {
             y: Math.round((zero.y + end.y) / 2)
         };
     }
+
+    getKernels(): KernelState[] {
+        return this.kernels;
+    }
+
+
+
 }

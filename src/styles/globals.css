@@ -56,14 +56,6 @@ input[type=number]::-webkit-inner-spin-button {
     -webkit-appearance: none;
 }
 
-.coefficient-input {
-    width: 0.75rem;
-}
-
-.coefficient-input:focus {
-    border: 0;
-    outline: none;
-}
 
 .form-lines {
     display: grid;

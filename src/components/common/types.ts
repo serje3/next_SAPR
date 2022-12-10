@@ -24,3 +24,19 @@ export type SupportState = {
     kernelId: number,
     leftSide: boolean
 }
+
+export enum Load {
+    Distributed,
+    Concentrated
+}
+
+export type DistributedLoad = LoadState<Load.Distributed>
+export type ConcentratedLoad = LoadState<Load.Concentrated>
+
+export type LoadState<T> = {
+    id: number
+    value: number
+    loadType: T
+}
+
+export type AllLoadStates = (DistributedLoad|ConcentratedLoad)[]
