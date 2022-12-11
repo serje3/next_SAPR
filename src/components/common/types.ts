@@ -40,3 +40,9 @@ export type LoadState<T> = {
 }
 
 export type AllLoadStates = (DistributedLoad|ConcentratedLoad)[]
+
+export type PreprocessorState = {
+    lines: KernelState[],
+    supports: SupportState[],
+    loads: AllLoadStates
+}

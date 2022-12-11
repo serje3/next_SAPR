@@ -1,15 +1,11 @@
 import {
     AllLoadStates,
-    KernelState,
+    KernelState, PreprocessorState,
     SupportState
 } from "../../components/common/types";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit"
 
-const initialState: {
-    lines: KernelState[],
-    supports: SupportState[],
-    loads: AllLoadStates
-} = {
+const initialState: PreprocessorState = {
     lines: [],
     supports: [null, null],
     loads: []
