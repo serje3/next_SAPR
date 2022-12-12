@@ -9,7 +9,7 @@ export default function Compute(){
 
     const processor = new ComputeProcessor()
     processor.preprocessor = preprocessor
-    processor.compute()
+    console.log(processor.compute().b)
 
     return (
         <div className={styles.container}>

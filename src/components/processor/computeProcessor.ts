@@ -1,32 +1,18 @@
-import {AllLoadStates, KernelState, PreprocessorState, SupportState} from "../common/types";
+import {PreprocessorState, SupportState} from "../common/types";
+import {ProcessorService} from "../../pages/processor/service/processorService";
 
 export class ComputeProcessor {
-    private loads: AllLoadStates;
-    private kernels: KernelState[];
-    private supports: SupportState[];
+    private processorService: ProcessorService;
+
+
     set preprocessor(preprocessor: PreprocessorState) {
-        this.supports = preprocessor.supports;
-        this.loads = preprocessor.loads;
-        this.kernels = preprocessor.lines;
+        this.processorService = new ProcessorService(preprocessor.lines,preprocessor.loads,preprocessor.supports)
     }
 
-    compute(){
+    compute() {
         return {
-            A: this.ACalculate()
+            A: this.processorService.calculate.A(),
+            b: this.processorService.calculate.b(),
         }
-    }
-
-    private ACalculate(): number[][]{
-        const A: number[][] = new Array<number[]>(this.kernels.length)
-            .fill([])
-            .map(()=>new Array<number>(this.kernels.length).fill(0))
-
-        console.log(A)
-
-        for (let i = 0; i < this.kernels.length; i++) {
-
-        }
-
-        return [[]]
     }
 }
