@@ -46,3 +46,9 @@ export type PreprocessorState = {
     supports: SupportState[],
     loads: AllLoadStates
 }
+
+export type ProcessorState = {
+    A: number[][],
+    b: number[],
+    delta:number[]
+}

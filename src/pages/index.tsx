@@ -20,9 +20,8 @@ export default function Home() {
             <Link href={"/processor"} className={styles.card}>
                 <h3>Процессор</h3>
             </Link>
-            <Link href={"/"} className={styles.card}>
+            <Link href={"/postprocessor"} className={styles.card}>
                 <h3>Постпроцессор</h3>
-                <p>не готов</p>
             </Link>
         </div>
     )

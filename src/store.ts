@@ -1,11 +1,12 @@
 import { configureStore, ThunkAction, Action } from '@reduxjs/toolkit'
 import {preprocessorSlice} from "./redux/reducers/preprocessorSlice";
+import {procesorSlice} from "./redux/reducers/processorSlice";
 
 export function makeStore() {
     return configureStore({
         reducer: {
             preprocessor: preprocessorSlice.reducer,
-            processor: null,
+            processor: procesorSlice.reducer,
             postprocessor: null
         },
     })
