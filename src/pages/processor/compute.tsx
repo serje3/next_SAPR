@@ -27,9 +27,9 @@ export default function Compute() {
             </Link>
             <div className={styles.card}>
                 <h3>Процессор завершил вычисления</h3>
-                <p>A={data.A.map((v,i)=><div key={i}>{v.join(', ')}</div>)}</p>
-                <p>b={data.b.join(', ')}</p>
-                <p>delta={data.delta.join(',')}</p>
+                <div>A={data.A.map((v,i)=><div key={i}>{v.join(', ')}</div>)}</div>
+                <div>b={data.b.join(', ')}</div>
+                <div>delta={data.delta.join(',')}</div>
             </div>
         </div>
     )

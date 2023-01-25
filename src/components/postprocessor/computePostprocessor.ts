@@ -1,7 +1,6 @@
 import {AbstractCompute} from "../common/other/abstract/AbstractCompute";
 import {PostprocessorService} from "../service/postprocessorService";
 import {PreprocessorState, ProcessorState} from "../common/types";
-import {ProcessorService} from "../service/processorService";
 
 export class ComputePostprocessor extends AbstractCompute{
     protected service: PostprocessorService;
@@ -14,7 +13,12 @@ export class ComputePostprocessor extends AbstractCompute{
         this.service = new PostprocessorService(preprocessor, processor)
     }
 
-    compute() {
+    compute(): {Nx: number[][], ux: number[][], ox:number[][]} {
+        return {
+            Nx: this.service.calculate.Nx(),
+            ux: this.service.calculate.ux(),
+            ox: this.service.calculate.ox()
+        }
     }
 
 }

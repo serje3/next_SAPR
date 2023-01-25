@@ -108,6 +108,7 @@ export class ProcessorService implements IService{
     private deltaCalculate(): number[] {
         const A = this.calculate.A()
         const b = this.calculate.b()
+        console.log(A)
         const inverse = inv(matrix(A))
         const x = multiply(inverse,b)
         const result = []
